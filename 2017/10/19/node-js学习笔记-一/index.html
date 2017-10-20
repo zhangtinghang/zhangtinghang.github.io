@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Zhang">
 <meta property="og:description" content="学习笔记关于node.js1.node.js属于单线程，单进程应用程序，每个API都是异步进行，并作为独立线程运行。2.Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。3.Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.4.在事件驱动模型中，会生成一个主循环来监听事件，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-20T07:27:48.423Z">
+<meta property="og:updated_time" content="2017-10-20T07:45:53.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node.js学习笔记(一)">
 <meta name="twitter:description" content="学习笔记关于node.js1.node.js属于单线程，单进程应用程序，每个API都是异步进行，并作为独立线程运行。2.Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。3.Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.4.在事件驱动模型中，会生成一个主循环来监听事件，">
@@ -409,6 +409,7 @@
       
         <h2 id="学习笔记"><a href="#学习笔记" class="headerlink" title="学习笔记"></a>学习笔记</h2><h3 id="关于node-js"><a href="#关于node-js" class="headerlink" title="关于node.js"></a>关于node.js</h3><p>1.node.js属于单线程，单进程应用程序，每个API都是异步进行，并作为独立线程运行。<br>2.Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。<br>3.Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.<br>4.在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数。整个事件驱动的流程就是这么实现的，非常简洁。有点类似于观察者模式，事件相当于一个主题(Subject)，而所有注册到这个事件上的处理函数相当于观察者(Observer)。</p>
 <p>理解：在主线程接收到请求等操作，便分出一个进程单独处理，而主进程依然按照以前的状态运行，这样，只需要一个单进程的单线程就处理高并发。（难道线程或进程开多了不会造成卡顿吗？），而事件驱动模型，类似于主进程在那里观察整个运作流程，而有进程处理完相关操作后，返回给主进程，然后主进程按照编程者所预设的流程执行下一步？</p>
+<a id="more"></a>
 <h3 id="关于Node-js-EventEmitter"><a href="#关于Node-js-EventEmitter" class="headerlink" title="关于Node.js EventEmitter"></a>关于Node.js EventEmitter</h3><p>1.Node.js 所有的异步 I/O 操作在完成时都会发送一个事件到事件队列。<br>2.Node.js里面的许多对象都会分发事件：一个net.Server对象会在每次有新连接时分发一个事件， 一个fs.readStream对象会在文件被打开的时候发出一个事件。 所有这些产生事件的对象都是 events.EventEmitter 的实例。</p>
 <blockquote><br>    1.EventEmitter 对象如果在实例化时发生错误，会触发 error 事件。当添加新的监听器时，newListener 事件会触发，当监听器被移除时，removeListener 事件被触发。<br>    2.EventEmitter 的每个事件由一个事件名和若干个参数组成，事件名是一个字符串，通常表达一定的语义。对于每个事件，EventEmitter 支持 若干个事件监听器。<br>当事件触发时，注册到这个事件的事件监听器被依次调用，事件参数作为回调函数参数传递。<br></blockquote>
 
