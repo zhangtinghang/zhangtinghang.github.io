@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MUI," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="写在前面因最近项目需要制作一个聊天界面，对比后感觉MUI源码内的im-chat.html文件对各种情况的处理比较的全面，因此，将整个页面的逻辑从头到尾理了一遍，希望有需求的小伙伴可以少走弯路，通过这个模板，可以根据我们自己需要的功能进行定制，如果不是很清楚（用词不当）的地方，还请小伙伴们提出来，做相关修改，谢谢！ps：理这种逻辑性的东西需要耐心，所以希望小伙伴能够静下心来慢慢理，任何代码都是根据需">
+<meta name="keywords" content="MUI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记之--详解im-chat源码">
+<meta property="og:url" content="http://yoursite.com/2017/11/29/学习笔记之-详解im-chat源码/index.html">
+<meta property="og:site_name" content="Zhang">
+<meta property="og:description" content="写在前面因最近项目需要制作一个聊天界面，对比后感觉MUI源码内的im-chat.html文件对各种情况的处理比较的全面，因此，将整个页面的逻辑从头到尾理了一遍，希望有需求的小伙伴可以少走弯路，通过这个模板，可以根据我们自己需要的功能进行定制，如果不是很清楚（用词不当）的地方，还请小伙伴们提出来，做相关修改，谢谢！ps：理这种逻辑性的东西需要耐心，所以希望小伙伴能够静下心来慢慢理，任何代码都是根据需">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-29T14:38:36.230Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学习笔记之--详解im-chat源码">
+<meta name="twitter:description" content="写在前面因最近项目需要制作一个聊天界面，对比后感觉MUI源码内的im-chat.html文件对各种情况的处理比较的全面，因此，将整个页面的逻辑从头到尾理了一遍，希望有需求的小伙伴可以少走弯路，通过这个模板，可以根据我们自己需要的功能进行定制，如果不是很清楚（用词不当）的地方，还请小伙伴们提出来，做相关修改，谢谢！ps：理这种逻辑性的东西需要耐心，所以希望小伙伴能够静下心来慢慢理，任何代码都是根据需">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/29/学习笔记之-详解im-chat源码/"/>
+
+
+
+
+
+  <title>学习笔记之--详解im-chat源码 | Zhang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d2d9947efd863d66d08c9c1bbc47e6ba";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/29/学习笔记之-详解im-chat源码/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Z杭">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">学习笔记之--详解im-chat源码</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-29T22:37:35+08:00">
+                2017-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HTML5/" itemprop="url" rel="index">
+                    <span itemprop="name">HTML5</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/29/学习笔记之-详解im-chat源码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/29/学习笔记之-详解im-chat源码/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>因最近项目需要制作一个聊天界面，对比后感觉MUI源码内的im-chat.html文件对各种情况的处理比较的全面，因此，将整个页面的逻辑从头到尾理了一遍，希望有需求的小伙伴可以少走弯路，通过这个模板，可以根据我们自己需要的功能进行定制，如果不是很清楚（用词不当）的地方，还请小伙伴们提出来，做相关修改，谢谢！<br>ps：理这种逻辑性的东西需要耐心，所以希望小伙伴能够静下心来慢慢理，任何代码都是根据需求实现。所以，可以结合实际操作来看相关模块。最后，求一波关注，哈哈！</p>
+<h2 id="相关引用"><a href="#相关引用" class="headerlink" title="相关引用"></a>相关引用</h2><p>这个聊天框架基于MUI开发，正常引入相关文件后，还需引入如下文件：</p>
+<ol>
+<li>图片预览的mui.imageviewer.css样式文件，</li>
+<li>处理图片浏览的mui.imageViewer.js文件，</li>
+<li>模板渲染的arttmpl.js文件；<h2 id="代码详解"><a href="#代码详解" class="headerlink" title="代码详解"></a>代码详解</h2><a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div><div class="line">360</div><div class="line">361</div><div class="line">362</div><div class="line">363</div><div class="line">364</div><div class="line">365</div><div class="line">366</div><div class="line">367</div><div class="line">368</div><div class="line">369</div><div class="line">370</div><div class="line">371</div><div class="line">372</div><div class="line">373</div><div class="line">374</div><div class="line">375</div><div class="line">376</div><div class="line">377</div><div class="line">378</div><div class="line">379</div><div class="line">380</div><div class="line">381</div><div class="line">382</div><div class="line">383</div><div class="line">384</div><div class="line">385</div><div class="line">386</div><div class="line">387</div><div class="line">388</div><div class="line">389</div><div class="line">390</div><div class="line">391</div><div class="line">392</div><div class="line">393</div><div class="line">394</div><div class="line">395</div><div class="line">396</div><div class="line">397</div><div class="line">398</div><div class="line">399</div><div class="line">400</div><div class="line">401</div><div class="line">402</div><div class="line">403</div><div class="line">404</div><div class="line">405</div><div class="line">406</div><div class="line">407</div><div class="line">408</div><div class="line">409</div><div class="line">410</div><div class="line">411</div><div class="line">412</div><div class="line">413</div><div class="line">414</div><div class="line">415</div><div class="line">416</div><div class="line">417</div><div class="line">418</div><div class="line">419</div><div class="line">420</div><div class="line">421</div><div class="line">422</div><div class="line">423</div><div class="line">424</div><div class="line">425</div><div class="line">426</div><div class="line">427</div><div class="line">428</div><div class="line">429</div><div class="line">430</div><div class="line">431</div><div class="line">432</div><div class="line">433</div><div class="line">434</div><div class="line">435</div><div class="line">436</div><div class="line">437</div><div class="line">438</div><div class="line">439</div><div class="line">440</div><div class="line">441</div><div class="line">442</div><div class="line">443</div><div class="line">444</div><div class="line">445</div><div class="line">446</div><div class="line">447</div><div class="line">448</div></pre></td><td class="code"><pre><div class="line">&lt;body contextmenu=&quot;return false;&quot;&gt;</div><div class="line">        &lt;header class=&quot;mui-bar mui-bar-nav&quot;&gt;</div><div class="line">            &lt;a class=&quot;mui-action-back mui-icon mui-icon-left-nav mui-pull-left&quot;&gt;&lt;/a&gt;</div><div class="line">            &lt;h1 class=&quot;mui-title&quot;&gt;chat (聊天窗口)&lt;/h1&gt;</div><div class="line">        &lt;/header&gt;</div><div class="line">        &lt;pre id=&apos;h&apos;&gt;&lt;/pre&gt;</div><div class="line">        &lt;script id=&apos;msg-template&apos; type=&quot;text/template&quot;&gt;</div><div class="line">            &lt;% for(var i in record)&#123; var item=record[i]; %&gt;</div><div class="line">                &lt;div class=&quot;msg-item &lt;%= (item.sender==&apos;self&apos;?&apos; msg-item-self&apos;:&apos;&apos;) %&gt;&quot; msg-type=&apos;&lt;%=(item.type)%&gt;&apos; msg-content=&apos;&lt;%=(item.content)%&gt;&apos;&gt;</div><div class="line">                    &lt;% if(item.sender==&apos;self&apos; ) &#123; %&gt;</div><div class="line">                        &lt;i class=&quot;msg-user mui-icon mui-icon-person&quot;&gt;&lt;/i&gt;</div><div class="line">                    &lt;% &#125; else &#123; %&gt;</div><div class="line">                        &lt;img class=&quot;msg-user-img&quot; src=&quot;../images/logo.png&quot; alt=&quot;&quot; /&gt;</div><div class="line">                    &lt;% &#125; %&gt;</div><div class="line">                    &lt;div class=&quot;msg-content&quot;&gt;</div><div class="line">                        &lt;div class=&quot;msg-content-inner&quot;&gt;</div><div class="line">                            &lt;% if(item.type==&apos;text&apos; ) &#123; %&gt;</div><div class="line">                                &lt;%=( item.content|| &apos;&amp;nbsp;&amp;nbsp;&apos;) %&gt;</div><div class="line">                            &lt;% &#125; else if(item.type==&apos;image&apos; ) &#123; %&gt;</div><div class="line">                                &lt;img class=&quot;msg-content-image&quot; src=&quot;&lt;%=(item.content)%&gt;&quot; style=&quot;max-width: 100px;&quot; /&gt;</div><div class="line">                            &lt;% &#125; else if(item.type==&apos;sound&apos; ) &#123; %&gt;</div><div class="line">                                &lt;span class=&quot;mui-icon mui-icon-mic&quot; style=&quot;font-size: 18px;font-weight: bold;&quot;&gt;&lt;/span&gt;</div><div class="line">                                &lt;span class=&quot;play-state&quot;&gt;点击播放&lt;/span&gt;</div><div class="line">                            &lt;% &#125; %&gt;</div><div class="line">                        &lt;/div&gt;</div><div class="line">                        &lt;div class=&quot;msg-content-arrow&quot;&gt;&lt;/div&gt;</div><div class="line">                    &lt;/div&gt;</div><div class="line">                    &lt;div class=&quot;mui-item-clear&quot;&gt;&lt;/div&gt;</div><div class="line">                &lt;/div&gt;</div><div class="line">            &lt;% &#125; %&gt;</div><div class="line">        &lt;/script&gt;</div><div class="line">        &lt;div class=&quot;mui-content&quot;&gt;</div><div class="line">            &lt;div id=&apos;msg-list&apos;&gt;</div><div class="line">            &lt;/div&gt;</div><div class="line">        &lt;/div&gt;</div><div class="line">        &lt;footer&gt;</div><div class="line">            &lt;div class=&quot;footer-left&quot;&gt;</div><div class="line">                &lt;i id=&apos;msg-image&apos; class=&quot;mui-icon mui-icon-camera&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;/i&gt;</div><div class="line">            &lt;/div&gt;</div><div class="line">            &lt;div class=&quot;footer-center&quot;&gt;</div><div class="line">                &lt;textarea id=&apos;msg-text&apos; type=&quot;text&quot; class=&apos;input-text&apos;&gt;&lt;/textarea&gt;</div><div class="line">                &lt;button id=&apos;msg-sound&apos; type=&quot;button&quot; class=&apos;input-sound&apos; style=&quot;display: none;&quot;&gt;按住说话&lt;/button&gt;</div><div class="line">            &lt;/div&gt;</div><div class="line">            &lt;label for=&quot;&quot; class=&quot;footer-right&quot;&gt;</div><div class="line">                &lt;i id=&apos;msg-type&apos; class=&quot;mui-icon mui-icon-mic&quot;&gt;&lt;/i&gt;</div><div class="line">            &lt;/label&gt;</div><div class="line">        &lt;/footer&gt;</div><div class="line">        &lt;div id=&apos;sound-alert&apos; class=&quot;rprogress&quot;&gt;</div><div class="line">            &lt;div class=&quot;rschedule&quot;&gt;&lt;/div&gt;</div><div class="line">            &lt;div class=&quot;r-sigh&quot;&gt;!&lt;/div&gt;</div><div class="line">            &lt;div id=&quot;audio_tips&quot; class=&quot;rsalert&quot;&gt;手指上滑，取消发送&lt;/div&gt;</div><div class="line">        &lt;/div&gt;</div><div class="line">        &lt;script src=&quot;../js/mui.min.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script src=&quot;../js/mui.imageViewer.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script src=&quot;../js/arttmpl.js&quot;&gt;&lt;/script&gt;</div><div class="line">        &lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;</div><div class="line">            (function($, doc) &#123;</div><div class="line">                var MIN_SOUND_TIME = 800;</div><div class="line">                $.init(&#123;</div><div class="line">                    gestureConfig: &#123;</div><div class="line">                        tap: true, //默认为true</div><div class="line">                        doubletap: true, //默认为false</div><div class="line">                        longtap: true, //默认为false</div><div class="line">                        swipe: true, //默认为true</div><div class="line">                        drag: true, //默认为true</div><div class="line">                        hold: true, //默认为false，不监听</div><div class="line">                        release: true //默认为false，不监听</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">                template.config(&apos;escape&apos;, false);</div><div class="line">                //$.plusReady=function(fn)&#123;fn();&#125;;</div><div class="line">                $.plusReady(function() &#123;</div><div class="line">                    plus.webview.currentWebview().setStyle(&#123;</div><div class="line">                        softinputMode: &quot;adjustResize&quot;</div><div class="line">                    &#125;);</div><div class="line">                    //强制弹出键盘</div><div class="line">                    var showKeyboard = function() &#123;</div><div class="line">                        if ($.os.ios) &#123;</div><div class="line">                            var webView = plus.webview.currentWebview().nativeInstanceObject();</div><div class="line">                            webView.plusCallMethod(&#123;</div><div class="line">                                &quot;setKeyboardDisplayRequiresUserAction&quot;: false</div><div class="line">                            &#125;);</div><div class="line">                        &#125; else &#123;</div><div class="line">                            var Context = plus.android.importClass(&quot;android.content.Context&quot;);</div><div class="line">                            var InputMethodManager = plus.android.importClass(&quot;android.view.inputmethod.InputMethodManager&quot;);</div><div class="line">                            var main = plus.android.runtimeMainActivity();</div><div class="line">                            var imm = main.getSystemService(Context.INPUT_METHOD_SERVICE);</div><div class="line">                            imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);</div><div class="line">                            //var view = ((ViewGroup)main.findViewById(android.R.id.content)).getChildAt(0);</div><div class="line">                            imm.showSoftInput(main.getWindow().getDecorView(), InputMethodManager.SHOW_IMPLICIT);</div><div class="line">                            //alert(&quot;ll&quot;);</div><div class="line">                        &#125;</div><div class="line">                    &#125;;</div><div class="line">                    var record = [&#123;</div><div class="line">                        sender: &apos;zs&apos;,</div><div class="line">                        type: &apos;text&apos;,</div><div class="line">                        content: &apos;Hi，我是 MUI 小管家！&apos;</div><div class="line">                    &#125;];</div><div class="line">                    var ui = &#123;</div><div class="line">                        body: doc.querySelector(&apos;body&apos;),</div><div class="line">                        footer: doc.querySelector(&apos;footer&apos;),</div><div class="line">                        footerRight: doc.querySelector(&apos;.footer-right&apos;),</div><div class="line">                        footerLeft: doc.querySelector(&apos;.footer-left&apos;),</div><div class="line">                        btnMsgType: doc.querySelector(&apos;#msg-type&apos;),</div><div class="line">                        boxMsgText: doc.querySelector(&apos;#msg-text&apos;),</div><div class="line">                        boxMsgSound: doc.querySelector(&apos;#msg-sound&apos;),</div><div class="line">                        btnMsgImage: doc.querySelector(&apos;#msg-image&apos;),</div><div class="line">                        areaMsgList: doc.querySelector(&apos;#msg-list&apos;),</div><div class="line">                        boxSoundAlert: doc.querySelector(&apos;#sound-alert&apos;),</div><div class="line">                        h: doc.querySelector(&apos;#h&apos;),</div><div class="line">                        content: doc.querySelector(&apos;.mui-content&apos;)</div><div class="line">                    &#125;;</div><div class="line">                    //将文本框宽度赋值给h</div><div class="line">                    ui.h.style.width = ui.boxMsgText.offsetWidth + &apos;px&apos;;</div><div class="line">                    //alert(ui.boxMsgText.offsetWidth );</div><div class="line">                    //让文本框居中</div><div class="line">                    var footerPadding = ui.footer.offsetHeight - ui.boxMsgText.offsetHeight;</div><div class="line">                    //语音输入相关操作</div><div class="line">                    var msgItemTap = function(msgItem, event) &#123;</div><div class="line">                        var msgType = msgItem.getAttribute(&apos;msg-type&apos;);</div><div class="line">                        var msgContent = msgItem.getAttribute(&apos;msg-content&apos;)</div><div class="line">                        if (msgType == &apos;sound&apos;) &#123;</div><div class="line">                            player = plus.audio.createPlayer(msgContent);</div><div class="line">                            var playState = msgItem.querySelector(&apos;.play-state&apos;);</div><div class="line">                            playState.innerText = &apos;正在播放...&apos;;</div><div class="line">                            player.play(function() &#123;</div><div class="line">                                playState.innerText = &apos;点击播放&apos;;</div><div class="line">                            &#125;, function(e) &#123;</div><div class="line">                                playState.innerText = &apos;点击播放&apos;;</div><div class="line">                            &#125;);</div><div class="line">                        &#125;</div><div class="line">                    &#125;;</div><div class="line">                    //图片预览组件</div><div class="line">                    var imageViewer = new $.ImageViewer(&apos;.msg-content-image&apos;, &#123;</div><div class="line">                        dbl: false</div><div class="line">                    &#125;);</div><div class="line">                    //绑定消息节点</div><div class="line">                    var bindMsgList = function() &#123;</div><div class="line">                        //绑定数据:</div><div class="line">                        /*tp.bind(&#123;</div><div class="line">                            template: &apos;msg-template&apos;,</div><div class="line">                            element: &apos;msg-list&apos;,</div><div class="line">                            model: record</div><div class="line">                        &#125;);*/</div><div class="line">                        //将数据绑定到界面上</div><div class="line">                        ui.areaMsgList.innerHTML = template(&apos;msg-template&apos;, &#123;</div><div class="line">                            &quot;record&quot;: record</div><div class="line">                        &#125;);</div><div class="line">                        //拿到所有的聊天节点</div><div class="line">                        var msgItems = ui.areaMsgList.querySelectorAll(&apos;.msg-item&apos;);</div><div class="line">                        //因为document.querySelectorAll()返回的并不是我们想当然的数组，而是NodeList，对NodeList，它里面没有.forEach方法，我们使用了这样的方法进行循环：</div><div class="line">                        //通过call将this绑定到msgItems（以[]下标的方式去遍历msgItems）</div><div class="line">                        [].forEach.call(msgItems, function(item, index) &#123;</div><div class="line">                            item.addEventListener(&apos;tap&apos;, function(event) &#123;</div><div class="line">                                //处理语音消息播放</div><div class="line">                                msgItemTap(item, event);</div><div class="line">                            &#125;, false);</div><div class="line">                        &#125;);</div><div class="line">                        //查找所有符合条件的图片</div><div class="line">                        imageViewer.findAllImage();</div><div class="line">                        //聊天界面的高度修改</div><div class="line">                        ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;</div><div class="line">                    &#125;;</div><div class="line">                    bindMsgList();</div><div class="line">                    //平滑高度过渡</div><div class="line">                    window.addEventListener(&apos;resize&apos;, function() &#123;</div><div class="line">                        ui.areaMsgList.scrollTop = ui.areaMsgList.scrollHeight + ui.areaMsgList.offsetHeight;</div><div class="line">                    &#125;, false);</div><div class="line">                    //发送对象声明</div><div class="line">                    var send = function(msg) &#123;</div><div class="line">                        //将消息内容体push进record</div><div class="line">                        record.push(msg);</div><div class="line">                        //绑定消息节点</div><div class="line">                        bindMsgList();</div><div class="line">                        toRobot(msg.content);</div><div class="line">                    &#125;;</div><div class="line">                    var toRobot = function(info) &#123;</div><div class="line">                        var apiUrl = &apos;http://www.tuling123.com/openapi/api&apos;;</div><div class="line">                        $.getJSON(apiUrl, &#123;</div><div class="line">                            &quot;key&quot;: &apos;acfbca724ea1b5db96d2eef88ce677dc&apos;,</div><div class="line">                            &quot;info&quot;: info,</div><div class="line">                            &quot;userid&quot;: plus.device.uuid</div><div class="line">                        &#125;, function(data) &#123;</div><div class="line">                            //alert(JSON.stringify(data));</div><div class="line">                            record.push(&#123;</div><div class="line">                                sender: &apos;zs&apos;,</div><div class="line">                                type: &apos;text&apos;,</div><div class="line">                                content: data.text</div><div class="line">                            &#125;);</div><div class="line">                            bindMsgList();</div><div class="line">                        &#125;);</div><div class="line">                    &#125;;</div><div class="line">                    </div><div class="line">                    //让输入框获取焦点</div><div class="line">                    function msgTextFocus() &#123;</div><div class="line">                            ui.boxMsgText.focus();</div><div class="line">                            setTimeout(function() &#123;</div><div class="line">                                ui.boxMsgText.focus();</div><div class="line">                            &#125;, 150);</div><div class="line">                        &#125;</div><div class="line">                        //解决长按“发送”按钮，导致键盘关闭的问题；</div><div class="line">                    ui.footerRight.addEventListener(&apos;touchstart&apos;, function(event) &#123;</div><div class="line">                        if (ui.btnMsgType.classList.contains(&apos;mui-icon-paperplane&apos;)) &#123;</div><div class="line">                            msgTextFocus();</div><div class="line">                            event.preventDefault();</div><div class="line">                        &#125;</div><div class="line">                    &#125;);</div><div class="line">                    //解决长按“发送”按钮，导致键盘关闭的问题；</div><div class="line">                    ui.footerRight.addEventListener(&apos;touchmove&apos;, function(event) &#123;</div><div class="line">                        if (ui.btnMsgType.classList.contains(&apos;mui-icon-paperplane&apos;)) &#123;</div><div class="line">                            msgTextFocus();</div><div class="line">                            event.preventDefault();</div><div class="line">                        &#125;</div><div class="line">                    &#125;);</div><div class="line">                    //                  ui.footerRight.addEventListener(&apos;touchcancel&apos;, function(event) &#123;</div><div class="line">                    //                      if (ui.btnMsgType.classList.contains(&apos;mui-icon-paperplane&apos;)) &#123;</div><div class="line">                    //                          msgTextFocus();</div><div class="line">                    //                          event.preventDefault();</div><div class="line">                    //                      &#125;</div><div class="line">                    //                  &#125;);</div><div class="line">                    //                  ui.footerRight.addEventListener(&apos;touchend&apos;, function(event) &#123;</div><div class="line">                    //                      if (ui.btnMsgType.classList.contains(&apos;mui-icon-paperplane&apos;)) &#123;</div><div class="line">                    //                          msgTextFocus();</div><div class="line">                    //                          event.preventDefault();</div><div class="line">                    //                      &#125;</div><div class="line">                    //                  &#125;);</div><div class="line">                    //长按离开屏幕时触发</div><div class="line">                    ui.footerRight.addEventListener(&apos;release&apos;, function(event) &#123;</div><div class="line">                        //当是文字时</div><div class="line">                        if (ui.btnMsgType.classList.contains(&apos;mui-icon-paperplane&apos;)) &#123;</div><div class="line">                            //showKeyboard();</div><div class="line">                            ui.boxMsgText.focus();</div><div class="line">                            setTimeout(function() &#123;</div><div class="line">                                ui.boxMsgText.focus();</div><div class="line">                            &#125;, 150);</div><div class="line">                            //                          event.detail.gesture.preventDefault();</div><div class="line">                            send(&#123;</div><div class="line">                                sender: &apos;self&apos;,</div><div class="line">                                type: &apos;text&apos;,</div><div class="line">                                content: ui.boxMsgText.value.replace(new RegExp(&apos;\n&apos;, &apos;gm&apos;), &apos;&lt;br/&gt;&apos;)</div><div class="line">                            &#125;);</div><div class="line">                            ui.boxMsgText.value = &apos;&apos;;</div><div class="line">                            $.trigger(ui.boxMsgText, &apos;input&apos;, null);</div><div class="line">                        &#125; </div><div class="line">                        //当是语音时</div><div class="line">                        else if (ui.btnMsgType.classList.contains(&apos;mui-icon-mic&apos;)) &#123;</div><div class="line">                            ui.btnMsgType.classList.add(&apos;mui-icon-compose&apos;);</div><div class="line">                            ui.btnMsgType.classList.remove(&apos;mui-icon-mic&apos;);</div><div class="line">                            ui.boxMsgText.style.display = &apos;none&apos;;</div><div class="line">                            ui.boxMsgSound.style.display = &apos;block&apos;;</div><div class="line">                            ui.boxMsgText.blur();</div><div class="line">                            document.body.focus();</div><div class="line">                        &#125;</div><div class="line">                        //当是文本状态时</div><div class="line">                        else if (ui.btnMsgType.classList.contains(&apos;mui-icon-compose&apos;)) &#123;</div><div class="line">                            ui.btnMsgType.classList.add(&apos;mui-icon-mic&apos;);</div><div class="line">                            ui.btnMsgType.classList.remove(&apos;mui-icon-compose&apos;);</div><div class="line">                            ui.boxMsgSound.style.display = &apos;none&apos;;</div><div class="line">                            ui.boxMsgText.style.display = &apos;block&apos;;</div><div class="line">                            //--</div><div class="line">                            //showKeyboard();</div><div class="line">                            ui.boxMsgText.focus();</div><div class="line">                            setTimeout(function() &#123;</div><div class="line">                                ui.boxMsgText.focus();</div><div class="line">                            &#125;, 150);</div><div class="line">                        &#125;</div><div class="line">                    &#125;, false);</div><div class="line">                    </div><div class="line">                    //点击左边按钮时</div><div class="line">                    ui.footerLeft.addEventListener(&apos;tap&apos;, function(event) &#123;</div><div class="line">                        var btnArray = [&#123;</div><div class="line">                            title: &quot;拍照&quot;</div><div class="line">                        &#125;, &#123;</div><div class="line">                            title: &quot;从相册选择&quot;</div><div class="line">                        &#125;];</div><div class="line">                        plus.nativeUI.actionSheet(&#123;</div><div class="line">                            title: &quot;选择照片&quot;,</div><div class="line">                            cancel: &quot;取消&quot;,</div><div class="line">                            buttons: btnArray</div><div class="line">                        &#125;, function(e) &#123;</div><div class="line">                            var index = e.index;</div><div class="line">                            switch (index) &#123;</div><div class="line">                                case 0:</div><div class="line">                                    break;</div><div class="line">                                case 1:</div><div class="line">                                    var cmr = plus.camera.getCamera();</div><div class="line">                                    cmr.captureImage(function(path) &#123;</div><div class="line">                                        send(&#123;</div><div class="line">                                            sender: &apos;self&apos;,</div><div class="line">                                            type: &apos;image&apos;,</div><div class="line">                                            content: &quot;file://&quot; + plus.io.convertLocalFileSystemURL(path)</div><div class="line">                                        &#125;);</div><div class="line">                                    &#125;, function(err) &#123;&#125;);</div><div class="line">                                    break;</div><div class="line">                                case 2:</div><div class="line">                                    plus.gallery.pick(function(path) &#123;</div><div class="line">                                        send(&#123;</div><div class="line">                                            sender: &apos;self&apos;,</div><div class="line">                                            type: &apos;image&apos;,</div><div class="line">                                            content: path</div><div class="line">                                        &#125;);</div><div class="line">                                    &#125;, function(err) &#123;&#125;, null);</div><div class="line">                                    break;</div><div class="line">                            &#125;</div><div class="line">                        &#125;);</div><div class="line">                    &#125;, false); </div><div class="line">                    //控制按住语音时的显示与隐藏</div><div class="line">                    var setSoundAlertVisable=function(show)&#123;</div><div class="line">                        if(show)&#123;</div><div class="line">                            ui.boxSoundAlert.style.display = &apos;block&apos;;</div><div class="line">                            ui.boxSoundAlert.style.opacity = 1;</div><div class="line">                        &#125;else&#123;</div><div class="line">                            ui.boxSoundAlert.style.opacity = 0;</div><div class="line">                            //fadeOut 完成再真正隐藏</div><div class="line">                            setTimeout(function()&#123;</div><div class="line">                                ui.boxSoundAlert.style.display = &apos;none&apos;;</div><div class="line">                            &#125;,200);</div><div class="line">                        &#125;</div><div class="line">                    &#125;;</div><div class="line">                    var recordCancel = false;</div><div class="line">                    var recorder = null;</div><div class="line">                    var audio_tips = document.getElementById(&quot;audio_tips&quot;);</div><div class="line">                    var startTimestamp = null;</div><div class="line">                    var stopTimestamp = null;</div><div class="line">                    var stopTimer = null;</div><div class="line">                    //按住说话时候触发</div><div class="line">                    ui.boxMsgSound.addEventListener(&apos;hold&apos;, function(event) &#123;</div><div class="line">                        recordCancel = false;</div><div class="line">                        //如果有结束时间，清除定时器</div><div class="line">                        if(stopTimer)clearTimeout(stopTimer);</div><div class="line">                        //修改显示文字</div><div class="line">                        audio_tips.innerHTML = &quot;手指上划，取消发送&quot;;</div><div class="line">                        //移除rprogress-sigh</div><div class="line">                        ui.boxSoundAlert.classList.remove(&apos;rprogress-sigh&apos;);</div><div class="line">                        //显示样式</div><div class="line">                        setSoundAlertVisable(true);</div><div class="line">                        //获取录音对象  5+模块</div><div class="line">                        recorder = plus.audio.getRecorder();</div><div class="line">                        if (recorder == null) &#123;</div><div class="line">                            plus.nativeUI.toast(&quot;不能获取录音对象&quot;);</div><div class="line">                            return;</div><div class="line">                        &#125;</div><div class="line">                        //记录当前录音时间</div><div class="line">                        startTimestamp = (new Date()).getTime();</div><div class="line">                        //保存录音http://www.html5plus.org/doc/zh_cn/audio.html#plus.audio.RecordOption</div><div class="line">                        recorder.record(&#123;</div><div class="line">                            filename: &quot;_doc/audio/&quot;</div><div class="line">                        &#125;, function(path) &#123;</div><div class="line">                            if (recordCancel) return;</div><div class="line">                            send(&#123;</div><div class="line">                                sender: &apos;self&apos;,</div><div class="line">                                type: &apos;sound&apos;,</div><div class="line">                                content: path</div><div class="line">                            &#125;);</div><div class="line">                        &#125;, function(e) &#123;</div><div class="line">                            plus.nativeUI.toast(&quot;录音时出现异常: &quot; + e.message);</div><div class="line">                        &#125;);</div><div class="line">                    &#125;, false);</div><div class="line">                    </div><div class="line">                    //监听drag（拖动中）事件 上滑;下滑事件</div><div class="line">                    ui.body.addEventListener(&apos;drag&apos;, function(event) &#123;</div><div class="line">                        //console.log(&apos;drag&apos;);</div><div class="line">                        if (Math.abs(event.detail.deltaY) &gt; 50) &#123;</div><div class="line">                            //此时没有录音操作执行 检查recordCancel状态</div><div class="line">                            if (!recordCancel) &#123;</div><div class="line">                                recordCancel = true;</div><div class="line">                                if (!audio_tips.classList.contains(&quot;cancel&quot;)) &#123;</div><div class="line">                                    audio_tips.classList.add(&quot;cancel&quot;);</div><div class="line">                                &#125;</div><div class="line">                                audio_tips.innerHTML = &quot;松开手指，取消发送&quot;;</div><div class="line">                            &#125;</div><div class="line">                        &#125; else &#123;</div><div class="line">                            if (recordCancel) &#123;</div><div class="line">                                recordCancel = false;</div><div class="line">                                if (audio_tips.classList.contains(&quot;cancel&quot;)) &#123;</div><div class="line">                                    audio_tips.classList.remove(&quot;cancel&quot;);</div><div class="line">                                &#125;</div><div class="line">                                audio_tips.innerHTML = &quot;手指上划，取消发送&quot;;</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                    &#125;, false);</div><div class="line">                    //长按离开录音节点时执行</div><div class="line">                    ui.boxMsgSound.addEventListener(&apos;release&apos;, function(event) &#123;</div><div class="line">                        //console.log(&apos;release&apos;);</div><div class="line">                        //初始化</div><div class="line">                        if (audio_tips.classList.contains(&quot;cancel&quot;)) &#123;</div><div class="line">                            audio_tips.classList.remove(&quot;cancel&quot;);</div><div class="line">                            audio_tips.innerHTML = &quot;手指上划，取消发送&quot;;</div><div class="line">                        &#125;</div><div class="line">                        //判断录音是否小于800毫秒，若小于，则废弃</div><div class="line">                        stopTimestamp = (new Date()).getTime();</div><div class="line">                        if (stopTimestamp - startTimestamp &lt; MIN_SOUND_TIME) &#123;</div><div class="line">                            audio_tips.innerHTML = &quot;录音时间太短&quot;;</div><div class="line">                            ui.boxSoundAlert.classList.add(&apos;rprogress-sigh&apos;);</div><div class="line">                            recordCancel = true;</div><div class="line">                            stopTimer=setTimeout(function()&#123;</div><div class="line">                                setSoundAlertVisable(false);</div><div class="line">                            &#125;,800);</div><div class="line">                        &#125;else&#123;</div><div class="line">                            setSoundAlertVisable(false);</div><div class="line">                        &#125;</div><div class="line">                        //停止录音模块</div><div class="line">                        recorder.stop();</div><div class="line">                    &#125;, false);</div><div class="line">                    </div><div class="line">                    //阻止浏览器默认的事件冒泡</div><div class="line">                    ui.boxMsgSound.addEventListener(&quot;touchstart&quot;, function(e) &#123;</div><div class="line">                        //console.log(&quot;start....&quot;);</div><div class="line">                        e.preventDefault();</div><div class="line">                    &#125;);</div><div class="line">                    //监听用户输入时触发</div><div class="line">                    ui.boxMsgText.addEventListener(&apos;input&apos;, function(event) &#123;</div><div class="line">                        //当输入为空时去掉发送文字，当不为空时，显示发送文字</div><div class="line">                        ui.btnMsgType.classList[ui.boxMsgText.value == &apos;&apos; ? &apos;remove&apos; : &apos;add&apos;](&apos;mui-icon-paperplane&apos;);</div><div class="line">                        //当用户输入值不为空时，设置自定义属性for 赋值msg-text</div><div class="line">                        ui.btnMsgType.setAttribute(&quot;for&quot;, ui.boxMsgText.value == &apos;&apos; ? &apos;&apos; : &apos;msg-text&apos;);</div><div class="line">                        //替换与正则表达式相匹配的值(转义)</div><div class="line">                        ui.h.innerText = ui.boxMsgText.value.replace(new RegExp(&apos;\n&apos;, &apos;gm&apos;), &apos;\n-&apos;) || &apos;-&apos;;</div><div class="line">                        //动态调整输入框高度</div><div class="line">                        ui.footer.style.height = (ui.h.offsetHeight + footerPadding) + &apos;px&apos;;</div><div class="line">                        //调整显示信息高度</div><div class="line">                        ui.content.style.paddingBottom = ui.footer.style.height;</div><div class="line">                    &#125;);</div><div class="line">                    var focus = false;</div><div class="line">                    //监听用户点击发送时触发</div><div class="line">                    ui.boxMsgText.addEventListener(&apos;tap&apos;, function(event) &#123;</div><div class="line">                        //得到焦点</div><div class="line">                        ui.boxMsgText.focus();</div><div class="line">                        setTimeout(function() &#123;</div><div class="line">                            ui.boxMsgText.focus();</div><div class="line">                        &#125;, 0);</div><div class="line">                        focus = true;</div><div class="line">                        setTimeout(function () &#123;</div><div class="line">                            focus = false;</div><div class="line">                        &#125;,1000);</div><div class="line">                        //阻止iOS2.0中的手势事件：gesture事件 </div><div class="line">                        event.detail.gesture.preventDefault();</div><div class="line">                    &#125;, false);</div><div class="line">                    //点击消息列表，关闭键盘</div><div class="line">                    ui.areaMsgList.addEventListener(&apos;click&apos;,function (event) &#123;</div><div class="line">                        if(!focus)&#123;</div><div class="line">                            ui.boxMsgText.blur();</div><div class="line">                        &#125;</div><div class="line">                    &#125;)  </div><div class="line">                &#125;);</div><div class="line">            &#125;(mui, document));</div><div class="line">        &lt;/script&gt;</div><div class="line">    &lt;/body&gt;</div></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MUI/" rel="tag"># MUI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/19/学习笔记之-初探prototype/" rel="next" title="学习笔记之--初探prototype">
+                <i class="fa fa-chevron-left"></i> 学习笔记之--初探prototype
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpg"
+                alt="Z杭" />
+            
+              <p class="site-author-name" itemprop="name">Z杭</p>
+              <p class="site-description motion-element" itemprop="description">愿你我都能早九晚五，又能浪迹天涯~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zhangtinghang" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:zth1041415167@outlook.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关引用"><span class="nav-number">2.</span> <span class="nav-text">相关引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码详解"><span class="nav-number">3.</span> <span class="nav-text">代码详解</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z杭</span>
+
+  
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://Z杭.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/11/29/学习笔记之-详解im-chat源码/';
+          this.page.identifier = '2017/11/29/学习笔记之-详解im-chat源码/';
+          this.page.title = '学习笔记之--详解im-chat源码';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://Z杭.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
