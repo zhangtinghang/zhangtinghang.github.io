@@ -441,6 +441,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Z杭">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/" itemprop="url">浅尝node-记一次vue结合axios参数提交问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-10T15:16:50+08:00">
+                2018-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/10/浅尝node-记一次vue结合axios参数提交问题/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…<br>（ps:觉得比较啰嗦的可直接看结论,哈哈\^_\^）</p>
+<h2 id="问题还原"><a href="#问题还原" class="headerlink" title="问题还原"></a>问题还原</h2><p>因为axios默认使用multipart/form-data编码方式，因此我们需要在请求头中添加一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;</span><br></pre></td></tr></table></figure></p>
+<p>此时在服务器端接收参数时，发现使用req.body无法获取参数（默认已经使用中间件解析参数）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123; extended: false &#125;));</span><br></pre></td></tr></table></figure></p>
+<p>百度后发现，需要使用qs中间件将axios 请求参数序列化，也就是使用如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (config.method === &apos;post&apos;) &#123;</span><br><span class="line">    config.data = qs.stringify(config.data)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在服务器端能够正常的接收到数据，并且存入数据库，本以为这样就完了…<br>（补充一句：如果上传的vey/value，value值不是对象，而是单个的string或者number等，服务器端是可以正常接收到参数，也就是说可以使用req.body.key取到数据的。只有是对象，数组等类型，默认也是字符串，并且key/value都是字符串，因此想使用req.body.key是不行的）<br>因结构需要，有两个参数需上传对象，并且存入数据库中，首先，前端上传参数如图1所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-8029710ce8fc4e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图1 上传参数"><br>刚开始测试的时候使用的apizza插件进行服务器端调试，发现上传参数没问题（并未做存入数据库处理），后使用前后端联调方式进行，发现前端上传的数据格式如图2所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-caa8a4d068bd0f05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图2 上传参数"><br>我们可以看到，此时links是单引号，当时并未想到是字符串，因为第一次使用axios，也为后面的踩坑埋下伏笔…<br>通过观察存入数据库中的数据发现，links字段并未存入数据库，因为前面使用插件调通的，因此并未多想，monoose数据模型如图3所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-62c16ccf6d291937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图3 结构模型"></p>
+<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><p>开始以为是存入对象需要将模型中的links字段更改为Miexd类型数据，但是发现没用，然后花了两天时间，查各种文档，一直将问题定位在了数据库存储类型上….<br>结果今天早上起床后继续调试，终于发现哪里不对，图2的links字段，好像有个单引号，突然反应过来，这不就是字符串吗？立马对比插件和axios发出去的请求，发现插件请求可以获取到，而axios请求却获取不到？忽然想起来，前端有一句:</p>
+<blockquote>
+<p>需要使用qs中间件将axios 请求参数序列化<br>结果看代码是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qs.stringify(config.data)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这个和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify()</span><br></pre></td></tr></table></figure></p>
+<p>何其相识~~~<br>与之对应的肯定需要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qs.parse()</span><br></pre></td></tr></table></figure></p>
+<p>结果在服务器端加入了这样一段代码后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var req = qs.parse(req.body);</span><br></pre></td></tr></table></figure></p>
+<p>就能正常解析上传的参数。。。自此问题解决。。。。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在使用axios进行请求时候请注意以下几点：<br>1.axios默认使用的编码方式为：multipart/form-data，如需使用x-www-form-urlencoded编码方式，请使用qs中间件将参数序列化。（如不序列化，服务器端无法获取到上传的参数）<br>2.服务器端我是采用的nodejs，此时需要将qs序列化后的参数反序列化，将其转化为JSON格式。</p>
+<p>##后记<br>俗话说，有得必有失。。。虽然调BUG调的有待难受，但是，收获也很多…</p>
+<h6 id="造成这次BUG有多方面原因："><a href="#造成这次BUG有多方面原因：" class="headerlink" title="造成这次BUG有多方面原因："></a>造成这次BUG有多方面原因：</h6><p>1.自己不熟悉axios框架。<br>2.较粗心，一直未曾发觉上传的参数是字符串。<br>3.mongoose使用的不熟悉（一直以为是数据库存储的原因，数据模型建立的有问题。。。）</p>
+<h6 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h6><p>1.通过这个BUG，重新翻阅了mongoose的相关操作，对mongoose理解加深。<br>2.重新翻阅了http相关的知识点，了解简单的http请求头的信息，以及基本原理。<br>3.重新了解了一遍axios的API请求，进一步熟悉axios的请求。</p>
+<h6 id="ps"><a href="#ps" class="headerlink" title="ps:"></a>ps:</h6><p>以上内容仅为自己的学习过程，欢迎大家取其精华，丢其糟粕。若对以上内容有不同简介或看法，欢迎一起探讨。<br>企鹅号：1041415167    邮箱地址：<a href="mailto:zth1041415167@outlook.com" target="_blank" rel="noopener">zth1041415167@outlook.com</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/29/学习笔记之-详解im-chat源码/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -760,321 +930,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/12/随笔-2017-11-12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Z杭">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zhang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/12/随笔-2017-11-12/" itemprop="url">随笔-2017-11-12</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-12T22:05:42+08:00">
-                2017-11-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mood-diary/" itemprop="url" rel="index">
-                    <span itemprop="name">mood diary</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/12/随笔-2017-11-12/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/12/随笔-2017-11-12/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>难得今天有时间可以来写写最近的状态。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/11/12/随笔-2017-11-12/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/23/随笔-2017-10-23/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Z杭">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zhang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/23/随笔-2017-10-23/" itemprop="url">随笔-2017-10-23</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-23T22:05:42+08:00">
-                2017-10-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mood-diary/" itemprop="url" rel="index">
-                    <span itemprop="name">mood diary</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/23/随笔-2017-10-23/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/23/随笔-2017-10-23/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>难得今天抽出时间去操场跑了几圈，这学期第二次跑步，第一次跑步还是在新生来之前，时隔两个月，终于能遇到一天天气不错，事情不多的晚上。</p>
-<p>在去操场的路上，想到要跑步，感觉整个身体的所有细胞都活跃了起来。不知道从什么时候开始，喜欢上了跑步，每次跑步都有一个习惯，喜欢在跑步的途中想一些事情，许多平常想不通，想不到，需要反思的事情，都会去想想，并且想想自己最近的状态，最近哪些事情没有处理对，或者说犯了哪些错误。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/23/随笔-2017-10-23/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/19/node-js学习笔记-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1183,163 +1038,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/10/19/node-js学习笔记-一/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/19/随笔-2017-10-19/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Z杭">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/header.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zhang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/19/随笔-2017-10-19/" itemprop="url">随笔-2017-10-19</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T14:49:35+08:00">
-                2017-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mood-diary/" itemprop="url" rel="index">
-                    <span itemprop="name">mood diary</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/19/随笔-2017-10-19/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/19/随笔-2017-10-19/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>这学期开学已经接近两个月，一共开设了6门专业课（Linux C++ Mysql PHP ARM单片机 EDA），每周12节课，里面有Linux Mysql PHP都是以前打算好好学习的课程，然而不知为什么，完全不适应老师上课的节奏，有时候不得不问自己一句，是否初心已变？来学校的目的是什么，而在学校学到了什么，现在的我处于大三阶段，然而对于这一点，还是感受到的是迷茫，有时候不禁问自己，来学校这几年到底学到了什么？马上毕业后，以什么去找工作呢，三年的课程，没有一学期是认认真真的上完一科的，其实说实话，现在也有目标，但是却是和课程无关的东西，每学期到期末都会十分的痛苦，纠结自己到底学这些是为了什么？可能是我自己不适应那种上课方式吧，最轻松，最舒适的上课方式莫过于自学，然后不懂得时候能够找到老师问一问，我想这样效率是否会更高呢？<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/19/随笔-2017-10-19/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1741,7 +1439,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1752,7 +1450,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1763,7 +1461,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

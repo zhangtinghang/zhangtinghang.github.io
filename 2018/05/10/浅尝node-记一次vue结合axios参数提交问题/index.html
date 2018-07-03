@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="MUI," />
+  <meta name="keywords" content="node.js," />
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="初探MUIMUI是一个HTML5前端框架，主要用于手机APP开发。附MUI官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^">
-<meta name="keywords" content="MUI">
+<meta name="description" content="写在前面闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…（ps:觉得比较啰嗦">
+<meta name="keywords" content="node.js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="学习笔记之--初探MUI">
-<meta property="og:url" content="http://yoursite.com/2017/10/12/学习笔记之-初探MUI/index.html">
+<meta property="og:title" content="浅尝node-记一次vue结合axios参数提交问题">
+<meta property="og:url" content="http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/index.html">
 <meta property="og:site_name" content="Zhang">
-<meta property="og:description" content="初探MUIMUI是一个HTML5前端框架，主要用于手机APP开发。附MUI官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^">
+<meta property="og:description" content="写在前面闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…（ps:觉得比较啰嗦">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-12T12:53:26.000Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-8029710ce8fc4e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-caa8a4d068bd0f05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-62c16ccf6d291937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-07-03T07:18:13.430Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="学习笔记之--初探MUI">
-<meta name="twitter:description" content="初探MUIMUI是一个HTML5前端框架，主要用于手机APP开发。附MUI官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^">
+<meta name="twitter:title" content="浅尝node-记一次vue结合axios参数提交问题">
+<meta name="twitter:description" content="写在前面闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…（ps:觉得比较啰嗦">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/7780733-8029710ce8fc4e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/10/12/学习笔记之-初探MUI/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/"/>
 
 
 
 
 
-  <title>学习笔记之--初探MUI | Zhang</title>
+  <title>浅尝node-记一次vue结合axios参数提交问题 | Zhang</title>
   
 
 
@@ -307,7 +311,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/12/学习笔记之-初探MUI/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Z杭">
@@ -324,7 +328,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">学习笔记之--初探MUI</h1>
+          <h1 class="post-title" itemprop="name headline">浅尝node-记一次vue结合axios参数提交问题</h1>
         
 
         <div class="post-meta">
@@ -336,8 +340,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T11:39:07+08:00">
-                2017-10-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-10T15:16:50+08:00">
+                2018-05-10
               </time>
             
 
@@ -359,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/HTML5/" itemprop="url" rel="index">
-                    <span itemprop="name">HTML5</span>
+                  <a href="/categories/node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">node.js</span>
                   </a>
                 </span>
 
@@ -377,9 +381,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/10/12/学习笔记之-初探MUI/#comments" itemprop="discussionUrl">
+                <a href="/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/12/学习笔记之-初探MUI/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/05/10/浅尝node-记一次vue结合axios参数提交问题/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -407,17 +411,24 @@
       
 
       
-        <h2 id="初探MUI"><a href="#初探MUI" class="headerlink" title="初探MUI"></a>初探MUI</h2><p>MUI是一个HTML5前端框架，主要用于手机APP开发。附<a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="noopener">MUI</a>官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^<br><a id="more"></a></p>
-<h2 id="浅谈MUI"><a href="#浅谈MUI" class="headerlink" title="浅谈MUI"></a>浅谈MUI</h2><p>当然，学习一门东西之前肯定需要先了解他，知道这个东西是干什么的。简单的来说，MUI是一个轻量级的HTML5前端框架，用它可以写出轻量级的APP应用，但根据我自己探索出来的区间是:<br>1.安卓手机：4.4以下卡顿比较明显（ps：极有可能是自身代码问题），安卓5.0能够流畅运行；<br>2.苹果手机：测试机使用的苹果6，对于一般应用能够完美运行（ps：苹果5s仅测试过chrome）。<br>（注:以上数据仅为自己测试，测试数据不一定准确。)</p>
-<h2 id="学习MUI"><a href="#学习MUI" class="headerlink" title="学习MUI"></a>学习MUI</h2><p>无论是学习一门语言，还是学习一个框架，必然第一步是看<a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="noopener">官方文档</a>，唯有熟悉官方文档后，才能谈使用。而我学习的步骤如下：<br>1.全览MUI文档，对MUI框架有一个简单的认识，知道这个框架大概有哪些东西，一般用于什么情况，此为第一次浏览。<br>2.熟悉文档后，打开Hbuilder，文件-&gt;新建-&gt;移动APP，在弹出框中选中Hello mui，并输入应用名称，此时会有一个项目出现在左侧栏，里面便是整个MUI框架的源码。<br>  （注：为什么这步写的这么详细呢，因为我发现很多小伙伴用了几个月时间的Hbuilder居然不知道这个编译器还可以写手机APP，Hbuilder最初不是和MUI配套发布的吗？表示不理解~）<br>3.拿到源码后，先看一遍整个demo，很多文档上面提到的东西，在源码里面都有体现，当然，我学到这一步时，脑袋里也只有一点最初的概念，这时，我觉得就没必要再去深究了。因为代码这种东西必须要多敲，所以，自己新建一个项目，模仿一个APP来写页面。那么，重点来了，各种复制粘贴MUI源码里面的东西来修改吧，建议调试使用（chrome浏览器）。<br>4.或许有人不理解为什么要模仿，但是我感觉模仿是最简单，也是最节省精力的一种方法，因为不用考虑布局本身，只需要把框架内的东西复制粘贴出来，似拼图一般，搭建一个属于自己的第一个APP界面，当然，在这个过程中肯定会遇到很多的问题，我的建议是自己去网上找资料并且看代码。网上资料的话可以去MUI的<a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="noopener">问答社区</a>，感觉这个社区已经足够解决大部分问题了，如果还有不能解决的问题，那么我感觉大部分原因在自身（1.忘记引入相关文件 2.以往设置相关模块的JS代码），这个时候就需要更多的耐心查看代码相关逻辑了。</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>只要反复练习上面的第四点，我相信对MUI框架和HTML5在手机端的布局就会有一个明确的认识，这个时候再去浏览一遍官方文档和demo肯定会有新的收获。毕竟身为程序员，逃不掉的始终是敲代码，唯有多练习，才能更加熟悉，唯有动手了，才能知道自己哪些知识点还不足，从而更加针对性的去补足。<br>上面的内容，虽然对代码只字未提，但是我想无论是编程语言还是框架等都只是一个工具，在学习时，更多的是找到自己学习的节奏和方法，编程时，更多的是思路和想法。<br>以上内容仅为自己的学习过程，欢迎大家取其精华，丢其糟粕，找到自己的学习状态。若对以上内容有不同简介或看法，欢迎一起探讨。<br>企鹅号：1041415167    邮箱地址：<a href="mailto:zth1041415167@outlook.com" target="_blank" rel="noopener">zth1041415167@outlook.com</a></p>
-<h3 id="附部分学习资料地址："><a href="#附部分学习资料地址：" class="headerlink" title="附部分学习资料地址："></a>附部分学习资料地址：</h3><ol>
-<li>forked from dcloudio <a href="https://github.com/zhangtinghang/casecode" target="_blank" rel="noopener">DCloud开源项目集锦</a></li>
-<li><a href="http://ask.dcloud.net.cn/explore/" target="_blank" rel="noopener">问答社区</a></li>
-<li>forked from 小青年 <a href="https://github.com/zhangtinghang/mui-demo" target="_blank" rel="noopener">github</a></li>
-<li><a href="http://www.hcoder.net/course/info_211.html" target="_blank" rel="noopener">MUI框架视频教程地址</a></li>
-</ol>
-<p>（ps：第一次写这个，写的不好还请多多见谅！终于领悟一个道理，知道容易，想要很好的说出来真的好难^-^ ^-^ 以上内容可能会不定期修改更新，下一篇日记准备列出关于MUI在学习MUI时遇到的各种坑，希望新学的小伙伴不要再去踩，也希望有兴趣的小伙伴多多关注！）</p>
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…<br>（ps:觉得比较啰嗦的可直接看结论,哈哈\^_\^）</p>
+<h2 id="问题还原"><a href="#问题还原" class="headerlink" title="问题还原"></a>问题还原</h2><p>因为axios默认使用multipart/form-data编码方式，因此我们需要在请求头中添加一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;</span><br></pre></td></tr></table></figure></p>
+<p>此时在服务器端接收参数时，发现使用req.body无法获取参数（默认已经使用中间件解析参数）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123; extended: false &#125;));</span><br></pre></td></tr></table></figure></p>
+<p>百度后发现，需要使用qs中间件将axios 请求参数序列化，也就是使用如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (config.method === &apos;post&apos;) &#123;</span><br><span class="line">    config.data = qs.stringify(config.data)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在服务器端能够正常的接收到数据，并且存入数据库，本以为这样就完了…<br>（补充一句：如果上传的vey/value，value值不是对象，而是单个的string或者number等，服务器端是可以正常接收到参数，也就是说可以使用req.body.key取到数据的。只有是对象，数组等类型，默认也是字符串，并且key/value都是字符串，因此想使用req.body.key是不行的）<br>因结构需要，有两个参数需上传对象，并且存入数据库中，首先，前端上传参数如图1所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-8029710ce8fc4e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图1 上传参数"><br>刚开始测试的时候使用的apizza插件进行服务器端调试，发现上传参数没问题（并未做存入数据库处理），后使用前后端联调方式进行，发现前端上传的数据格式如图2所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-caa8a4d068bd0f05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图2 上传参数"><br>我们可以看到，此时links是单引号，当时并未想到是字符串，因为第一次使用axios，也为后面的踩坑埋下伏笔…<br>通过观察存入数据库中的数据发现，links字段并未存入数据库，因为前面使用插件调通的，因此并未多想，monoose数据模型如图3所示：<br><img src="https://upload-images.jianshu.io/upload_images/7780733-62c16ccf6d291937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="图3 结构模型"></p>
+<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><p>开始以为是存入对象需要将模型中的links字段更改为Miexd类型数据，但是发现没用，然后花了两天时间，查各种文档，一直将问题定位在了数据库存储类型上….<br>结果今天早上起床后继续调试，终于发现哪里不对，图2的links字段，好像有个单引号，突然反应过来，这不就是字符串吗？立马对比插件和axios发出去的请求，发现插件请求可以获取到，而axios请求却获取不到？忽然想起来，前端有一句:</p>
+<blockquote>
+<p>需要使用qs中间件将axios 请求参数序列化<br>结果看代码是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qs.stringify(config.data)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这个和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSON.stringify()</span><br></pre></td></tr></table></figure></p>
+<p>何其相识~~~<br>与之对应的肯定需要:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qs.parse()</span><br></pre></td></tr></table></figure></p>
+<p>结果在服务器端加入了这样一段代码后:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var req = qs.parse(req.body);</span><br></pre></td></tr></table></figure></p>
+<p>就能正常解析上传的参数。。。自此问题解决。。。。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>在使用axios进行请求时候请注意以下几点：<br>1.axios默认使用的编码方式为：multipart/form-data，如需使用x-www-form-urlencoded编码方式，请使用qs中间件将参数序列化。（如不序列化，服务器端无法获取到上传的参数）<br>2.服务器端我是采用的nodejs，此时需要将qs序列化后的参数反序列化，将其转化为JSON格式。</p>
+<p>##后记<br>俗话说，有得必有失。。。虽然调BUG调的有待难受，但是，收获也很多…</p>
+<h6 id="造成这次BUG有多方面原因："><a href="#造成这次BUG有多方面原因：" class="headerlink" title="造成这次BUG有多方面原因："></a>造成这次BUG有多方面原因：</h6><p>1.自己不熟悉axios框架。<br>2.较粗心，一直未曾发觉上传的参数是字符串。<br>3.mongoose使用的不熟悉（一直以为是数据库存储的原因，数据模型建立的有问题。。。）</p>
+<h6 id="收获："><a href="#收获：" class="headerlink" title="收获："></a>收获：</h6><p>1.通过这个BUG，重新翻阅了mongoose的相关操作，对mongoose理解加深。<br>2.重新翻阅了http相关的知识点，了解简单的http请求头的信息，以及基本原理。<br>3.重新了解了一遍axios的API请求，进一步熟悉axios的请求。</p>
+<h6 id="ps"><a href="#ps" class="headerlink" title="ps:"></a>ps:</h6><p>以上内容仅为自己的学习过程，欢迎大家取其精华，丢其糟粕。若对以上内容有不同简介或看法，欢迎一起探讨。<br>企鹅号：1041415167    邮箱地址：<a href="mailto:zth1041415167@outlook.com" target="_blank" rel="noopener">zth1041415167@outlook.com</a></p>
 
       
     </div>
@@ -435,7 +446,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MUI/" rel="tag"># MUI</a>
+            <a href="/tags/node-js/" rel="tag"># node.js</a>
           
         </div>
       
@@ -448,14 +459,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/11/29/学习笔记之-详解im-chat源码/" rel="next" title="学习笔记之--详解im-chat源码">
+                <i class="fa fa-chevron-left"></i> 学习笔记之--详解im-chat源码
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/17/学习笔记之-初探MUI-二/" rel="prev" title="学习笔记之--初探MUI(二)">
-                学习笔记之--初探MUI(二) <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/21/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -618,7 +633,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初探MUI"><span class="nav-number">1.</span> <span class="nav-text">初探MUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅谈MUI"><span class="nav-number">2.</span> <span class="nav-text">浅谈MUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学习MUI"><span class="nav-number">3.</span> <span class="nav-text">学习MUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附部分学习资料地址："><span class="nav-number">4.1.</span> <span class="nav-text">附部分学习资料地址：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题还原"><span class="nav-number">2.</span> <span class="nav-text">问题还原</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析原因"><span class="nav-number">3.</span> <span class="nav-text">分析原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#造成这次BUG有多方面原因："><span class="nav-number">4.0.0.0.1.</span> <span class="nav-text">造成这次BUG有多方面原因：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#收获："><span class="nav-number">4.0.0.0.2.</span> <span class="nav-text">收获：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ps"><span class="nav-number">4.0.0.0.3.</span> <span class="nav-text">ps:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -764,9 +779,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2017/10/12/学习笔记之-初探MUI/';
-          this.page.identifier = '2017/10/12/学习笔记之-初探MUI/';
-          this.page.title = '学习笔记之--初探MUI';
+          this.page.url = 'http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/';
+          this.page.identifier = '2018/05/10/浅尝node-记一次vue结合axios参数提交问题/';
+          this.page.title = '浅尝node-记一次vue结合axios参数提交问题';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://Z杭.disqus.com/embed.js';
