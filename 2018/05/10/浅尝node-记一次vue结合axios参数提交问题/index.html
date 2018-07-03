@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="node.js," />
+  <meta name="keywords" content="MUI," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="写在前面闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…（ps:觉得比较啰嗦">
-<meta name="keywords" content="node.js">
+<meta name="keywords" content="MUI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅尝node-记一次vue结合axios参数提交问题">
 <meta property="og:url" content="http://yoursite.com/2018/05/10/浅尝node-记一次vue结合axios参数提交问题/index.html">
@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-8029710ce8fc4e85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-caa8a4d068bd0f05.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/7780733-62c16ccf6d291937.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-07-03T07:18:13.430Z">
+<meta property="og:updated_time" content="2018-07-03T07:29:28.272Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅尝node-记一次vue结合axios参数提交问题">
 <meta name="twitter:description" content="写在前面闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…（ps:觉得比较啰嗦">
@@ -363,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/node-js/" itemprop="url" rel="index">
-                    <span itemprop="name">node.js</span>
+                  <a href="/categories/HTML5/" itemprop="url" rel="index">
+                    <span itemprop="name">HTML5</span>
                   </a>
                 </span>
 
@@ -411,7 +411,7 @@
       
 
       
-        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…<br>（ps:觉得比较啰嗦的可直接看结论,哈哈\^_\^）</p>
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>闲来无事，最近使用vue全家桶结合nodejs搭建了一个简单的网站，在前端使用的axios做请求，后端框架使用express框架，在前端做数据请求时，因为axios默认的使用multipart/form-data编码方式进行参数提交，一般默认来说，post请求不涉及到文件上传一般都是使用的x-www-form-urlencoded编码方式进行参数提交，然后…噩梦开始了…<br>（ps:觉得比较啰嗦的可直接看结论,哈哈\^_\^）<br><a id="more"></a></p>
 <h2 id="问题还原"><a href="#问题还原" class="headerlink" title="问题还原"></a>问题还原</h2><p>因为axios默认使用multipart/form-data编码方式，因此我们需要在请求头中添加一行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;Content-Type&apos;: &apos;application/x-www-form-urlencoded; charset=UTF-8&apos;</span><br></pre></td></tr></table></figure></p>
 <p>此时在服务器端接收参数时，发现使用req.body无法获取参数（默认已经使用中间件解析参数）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(bodyParser.urlencoded(&#123; extended: false &#125;));</span><br></pre></td></tr></table></figure></p>
 <p>百度后发现，需要使用qs中间件将axios 请求参数序列化，也就是使用如下代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (config.method === &apos;post&apos;) &#123;</span><br><span class="line">    config.data = qs.stringify(config.data)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
@@ -446,7 +446,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/node-js/" rel="tag"># node.js</a>
+            <a href="/tags/MUI/" rel="tag"># MUI</a>
           
         </div>
       
@@ -459,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/29/学习笔记之-详解im-chat源码/" rel="next" title="学习笔记之--详解im-chat源码">
-                <i class="fa fa-chevron-left"></i> 学习笔记之--详解im-chat源码
+              <a href="/2017/12/09/浅尝MUI-记一次沉浸式问题/" rel="next" title="浅尝MUI-记一次沉浸式问题">
+                <i class="fa fa-chevron-left"></i> 浅尝MUI-记一次沉浸式问题
               </a>
             
           </div>
@@ -468,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/21/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -562,7 +558,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
