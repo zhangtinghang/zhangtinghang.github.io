@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Zhang">
 <meta property="og:description" content="初探MUI(二)MUI是一个HTML5前端框架，主要用于手机APP开发。附MUI官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-17T07:30:57.018Z">
+<meta property="og:updated_time" content="2017-10-17T07:30:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习笔记之--初探MUI(二)">
 <meta name="twitter:description" content="初探MUI(二)MUI是一个HTML5前端框架，主要用于手机APP开发。附MUI官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^">
@@ -407,11 +407,11 @@
       
 
       
-        <h2 id="初探MUI-二"><a href="#初探MUI-二" class="headerlink" title="初探MUI(二)"></a>初探MUI(二)</h2><p>MUI是一个HTML5前端框架，主要用于手机APP开发。附<a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="external">MUI</a>官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^<br><a id="more"></a></p>
+        <h2 id="初探MUI-二"><a href="#初探MUI-二" class="headerlink" title="初探MUI(二)"></a>初探MUI(二)</h2><p>MUI是一个HTML5前端框架，主要用于手机APP开发。附<a href="http://dev.dcloud.net.cn/mui/ui/" target="_blank" rel="noopener">MUI</a>官方文档。以下内容均围绕MUI进行讨论，欢迎大家骚扰^^<br><a id="more"></a></p>
 <h2 id="学习心得"><a href="#学习心得" class="headerlink" title="学习心得"></a>学习心得</h2><p>学习完MUI基础理论后，相信很多人都会觉得MUI真的很方便，基本需求都能够的到满足，但其实不然，因为MUI有很多的局限性，以及对某些手机的兼容性问题，导致很多时候会出现莫名其妙的BUG。根据个人观察发现，对于苹果系统更加的友好，而对于安卓系统，因为碎片化太严重，所以应该多找些机型测试。</p>
 <p>我遇到过的情况有：<br>1.底部导航栏（html5）：在红米note2，小米3，华为手机上完美使用，但是oppo一款型号底部导航条出现下移情况（注：底部导航条高度通过JS计算，高度写死时不会出现），如果遇到，将底部导航条高度写死。</p>
 <p>2.华为手机的虚拟按键，如果按照正常的流式布局下去，当页面内容多于屏幕高度时，底部有fixed定位的元素时，虚拟按键可能会把底部定位的东西遮挡住。(ps:经过测试，华为虚拟按键会缩小屏幕<strong>实际高度</strong>）解决办法：因为虚拟按键会压缩屏幕高度，而页面底部距离底部定位时，可以将fixed定位的元素挤压上去，将body，html页面高度设置为100%。</p>
-<p>3.使用<code>&lt;header&gt;&lt;/header&gt;</code>时，如果页面有<code>&lt;input type=&#39;text /&gt;</code>，此时输入文字会将<code>&lt;header&gt;&lt;/header&gt;</code>挤掉，我的解决办法是：打开软键盘时，挤压webview，减少视口的高度。但是这样做有一个问题，如果页面内容较多，会产生滚动条，给用户的感觉不好。也可以监听软键盘打开事件，动态调整页面。下面仅给出最简单的解决方案：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mui.plusReady(<span class="function"><span class="title">function</span></span> () &#123;             </div><div class="line">    plus.webview.currentWebview().setStyle(&#123;</div><div class="line">                softinputMode: <span class="string">"adjustResize"</span></div><div class="line">            &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>3.使用<code>&lt;header&gt;&lt;/header&gt;</code>时，如果页面有<code>&lt;input type=&#39;text /&gt;</code>，此时输入文字会将<code>&lt;header&gt;&lt;/header&gt;</code>挤掉，我的解决办法是：打开软键盘时，挤压webview，减少视口的高度。但是这样做有一个问题，如果页面内容较多，会产生滚动条，给用户的感觉不好。也可以监听软键盘打开事件，动态调整页面。下面仅给出最简单的解决方案：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mui.plusReady(<span class="function"><span class="title">function</span></span> () &#123;             </span><br><span class="line">    plus.webview.currentWebview().setStyle(&#123;</span><br><span class="line">                softinputMode: <span class="string">"adjustResize"</span></span><br><span class="line">            &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>4.使用原生底部导航条，目前遇到的问题是，真机测试时，在苹果6上完美渲染，测试相关逻辑都成功，但是在红米note2上，有两个ICON渲染不出来，只渲染出来了底部导航栏的高度，具体情况尚在测试中。。。。</p>
 <h2 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h2><p>1.在调试MUI项目时，我认为应该先使用安卓手机调试，因为我几次都是在苹果手机上成功调试，但是将源码放到安卓手机上时，出现各种未知的BUG,所以前期测试使用安卓手机，等程序调试完成后，再去苹果手机上测试。</p>
 <p>2.因为现在很多人都追求使用原生来写html5，在官方还没发布正式的底部导航条时，就自己按照社区的经验，自己改了一个底部导航条，但是因为打开新的页面时，底部原生导航条不会隐藏，所以没办法，还是只能采用mui提供的底部导航条，所以，对于mui的探索，还是需要自己去多研究，例如：和原生相关的界面渲染，操作原生的内容，调用原生JS等，都需要仔细的研究。所以，我觉得，如果有一定的安卓或者IOS开发经验的人来说比较的容易理解，但是对于一个前端开发人员来说，这一块肯定是学习的重点。</p>
@@ -639,7 +639,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
